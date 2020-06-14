@@ -1,0 +1,46 @@
+{
+  "name": "bjj",
+  "author": "Nathaniel Cho & Ralph Nguyen",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ralphamale/bjj.git"
+  },
+  "scripts": {
+    "dev": "NODE_OPTIONS='--inspect' NODE_ENV=development next",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production next start",
+    "format": "prettier --write '{components,pages,lib,utils}/**/*.js'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{components,pages,lib,utils}/**/*.{js,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "next": "9.4.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "recharts": "^1.8.5"
+  },
+  "devDependencies": {
+    "dotenv-webpack": "^1.8.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "2.0.2",
+    "tailwindcss": "^1.4.0"
+  }
+}
