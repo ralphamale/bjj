@@ -1,7 +1,7 @@
 import Head from "next/head";
 import PropTypes from "prop-types";
 import Layout from "components/Layout";
-import { updateElo } from "lib/utils";
+import updateElo from "lib/updateElo";
 
 export default function ELO(props) {
   return (
@@ -46,23 +46,37 @@ export async function getStaticProps(context) {
 
   // player map, keyed by name
   let competitor = {};
+  const roundMapOrder = {
+    F: 0,
+    SPF: 0,
+    SF: 1,
+    "4F": 2,
+    R2: 98,
+    R1: 99,
+  };
 
   try {
     const data = await CSVToJSON().fromFile(filePath);
     //naively sorted by year right now
-    data.sort((a, b) => {
-      return a.year - b.year;
-    });
+    // need to account for fights counted twice
+    data
+      .filter((x) => x.winLoss === "W")
+      .sort((a, b) => {
+        return a.year - b.year;
+      });
     data.forEach((fight) => {
-      if (!competitor[fight.name]) {
-        competitor[fight.name] = {
-          name: fight.name,
+      const name = fight.name;
+      if (!competitor[name]) {
+        competitor[name] = {
+          name,
           wins: 0,
           loses: 0,
           elo: 0,
         };
       }
-      const opponent = fight.opponent2 || fight.opponent1;
+      // when opponent2 !== null it means there's a profile for that fighter
+      const opponent =
+        fight.opponent2 == "null" ? fight.opponent1 : fight.opponent2;
       if (!competitor[opponent]) {
         competitor[opponent] = {
           name: opponent,
@@ -71,9 +85,9 @@ export async function getStaticProps(context) {
           elo: 0,
         };
       }
-      const winner = competitor[fight.name];
+      const winner = competitor[name];
       const loser = competitor[opponent];
-      updateElo(winner, loser, true, 30);
+      updateElo(winner, loser);
     });
   } catch (err) {
     console.error(err);
