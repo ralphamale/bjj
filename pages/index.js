@@ -1,22 +1,36 @@
 import Head from "next/head";
+import PropTypes from "prop-types";
 import Chart from "components/Chart";
+import Layout from "components/Layout";
 
 export default function Home(props) {
   return (
-    <div>
+    <Layout>
       <Head>
-        <title>IBJJF Meta Data</title>
+        <title>IBJJF Competition Data</title>
+        <meta
+          name="description"
+          content="ibjjf competition data, broken down into school results at each belt level"
+        />
+        <meta
+          name="og:description"
+          content="ibjjf competition data, broken down into school results at each belt level"
+        />
+        <meta name="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main>
         {Object.values(props.data).map((year) =>
           year.map((tournament, index) => <Chart key={index} {...tournament} />)
         )}
       </main>
-    </div>
+    </Layout>
   );
 }
+
+Home.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export async function getStaticProps(context) {
   const fs = require("fs");
