@@ -73,7 +73,7 @@ export async function getStaticProps(context) {
       }
       const winner = competitor[fight.name];
       const loser = competitor[opponent];
-      updateElo(winner, loser);
+      updateElo(winner, loser, true, 30);
     });
   } catch (err) {
     console.error(err);

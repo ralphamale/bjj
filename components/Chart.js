@@ -23,8 +23,6 @@ function Chart(props) {
       acc[cur.team].rank++;
       return acc;
     }, {});
-    console.log("School Data");
-    console.log(res);
     return res;
   }, [props.adultMaleTeamRanks]);
 
@@ -33,6 +31,7 @@ function Chart(props) {
       <PieChart width={800} height={400}>
         <Pie
           data={data02}
+          dataKey="value"
           cx={500}
           cy={200}
           innerRadius={40}
